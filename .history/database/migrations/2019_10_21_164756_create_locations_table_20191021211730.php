@@ -21,8 +21,7 @@ class CreateLocationsTable extends Migration
             $table->string('country')->nullable();
             $table->integer('zipcode');
             $table->string('address');
-            $table->timestamp('created_at')->useCurrent();
-            $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
+            $$table->timestamp('created_at')->useCurrent();
         });
     }
 
