@@ -10,9 +10,9 @@ class Hotel extends Model
     //
     
     public function list($noOfRecords,$start){
-        $take = $noOfRecords == 0 ? $this->table('hotels')->count(): 10;
+        $take = $noOfRecords == 0 ? : 10;
         $start = $start == null ? 0 : $start;
-        $results = $this->leftjoin('locations', 'hotels.location', '=', 'locations.id')->where('status','1')->skip($start)->take($take)->get(); 
+        $results = $this->leftjoin('locations', 'hotels.location', '=', 'locations.id')->where('status','1')->skip(0)->take(10)->get(); 
 
             foreach($results as &$result) 
             { 

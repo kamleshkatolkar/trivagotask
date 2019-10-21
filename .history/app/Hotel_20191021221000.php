@@ -9,10 +9,8 @@ class Hotel extends Model
     protected $table = 'hotels';
     //
     
-    public function list($noOfRecords,$start){
-        $take = $noOfRecords == 0 ? $this->table('hotels')->count(): 10;
-        $start = $start == null ? 0 : $start;
-        $results = $this->leftjoin('locations', 'hotels.location', '=', 'locations.id')->where('status','1')->skip($start)->take($take)->get(); 
+    public function list(){
+        $results = $this->leftjoin('locations', 'hotels.location', '=', 'locations.id')->where('status','1')->skip(0)->take(10)->get(); 
 
             foreach($results as &$result) 
             { 
@@ -26,6 +24,6 @@ class Hotel extends Model
                 unset($result['city'], $result['state'],$result['country'], $result['zipcode'], $result['address']);
             }
 
-        return $results; 
+        return $result->json(); 
     }
 }

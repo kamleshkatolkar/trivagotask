@@ -18,11 +18,10 @@ class HotelController extends Controller
         
     }
 
-    public function list($noOfRecords,$start = null)
+    public function list($noOfRecords,$start)
     {
-    
      $hotel = new Hotel();   
-     return $hotel->list($noOfRecords,$start);
+     return $hotel->list();
     }
     /**
      * Show the form for creating a new resource.
