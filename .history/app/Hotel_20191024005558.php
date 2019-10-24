@@ -7,8 +7,6 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use App\Rules\HotelName;
 use App\Rules\CategoryName;
-use Response;
-use DB;
 
 class Hotel extends Model
 {
@@ -126,36 +124,16 @@ class Hotel extends Model
     }
 
     public function createHotel($request){
+
         $auth_token = $request->auth_token;
         if($auth_token == null){
             $res = array (
-                "type"=>'https://www.computerhope.com/jargon/u/unauacce.htm',
-                "message"=>'Auth token not provided',
-                "detail"=>'To create a hotel in system, you must include Auth token in your request',
+                "type"=>false,
+                "message"=>$errors,
                 "error_code"=> 503,
                 "data"=>array()
             ); 
-            return  Response::json([
-                'error' => $res
-            ], 503);
-        }else{
-            $hotelier = new Hotelier();
-            $auth_row = Hotelier::where('auth_token',$auth_token)->where('status',1)->first();
-            if($auth_row == null){
-                $res = array (
-                    "type"=>'https://www.computerhope.com/jargon/u/unauacce.htm',
-                    "message"=>'Auth token is expired or not found',
-                    "detail"=>'The provided Auth token is either expired or not exist, Please check your request params again',
-                    "error_code"=> 503,
-                    "data"=>array()
-                ); 
-                return  Response::json([
-                    'error' => $res
-                ], 503);
-            }
-            $hotelier_id = $auth_row->id;
         }
-
         $validation = Validator::make($request->all(),[ 
             'name' =>  [
                 'required','min:10','max:100',
@@ -177,77 +155,14 @@ class Hotel extends Model
         ]);
 
         $errors = $validation->errors();
-        
-        if(empty($errors->message)){
-            $query = "select * from `hotels` where name ='".$request->name."' AND location = (select id from locations where zipcode = ".$request->location['zipcode'].")";
-            $checkHotelExists = DB::select($query);
-            if(empty($checkHotelExists)){
-                $location = new Location();
-                $location->city = $request->location['city'];
-                $location->state = $request->location['state'];
-                $location->country = $request->location['country'];
-                $location->zipcode = $request->location['zipcode'];
-                $location->address = $request->location['address'];
-                $location->save();
 
-                $hotel = new Hotel();
-                $hotel->name = $request->name;
-                $hotel->hotelier_id = $hotelier_id;
-                $hotel->rating = $request->rating;
-                $hotel->category = $request->category;
-                $hotel->location = $location->id;
-                $hotel->image = $request->image;
-                $hotel->price = $request->price;
-                $hotel->availability = $request->availability;
-                $hotel->save();
-                
-                if(!$hotel  || !$location){
-                    $res = array (
-                        "type"=>'https://www.computerhope.com/jargon/u/unauacce.htm',
-                        "message"=>'Hotel already exist for specified locations',
-                        "detail"=>'',
-                        "error_code"=> 500,
-                        "data"=>array()
-                    ); 
-                    return  Response::json([
-                        'error' => $res
-                    ], 500); 
-                }else{
-                    $res = array (
-                        "type"=>'https://www.computerhope.com/jargon/u/unauacce.htm',
-                        "message"=>'Hotel data inserted successfully',
-                        "detail"=> '',
-                        "error_code"=> 200,
-                        "data"=>$hotel
-                    ); 
-                    return  Response::json([
-                        'success' => $res
-                    ], 200);
-                }
-            }else{
-                $res = array (
-                    "type"=>'https://www.computerhope.com/jargon/u/unauacce.htm',
-                    "message"=>'Hotel already exist for specified locations',
-                    "detail"=>'',
-                    "error_code"=> 406,
-                    "data"=>array()
-                ); 
-                return  Response::json([
-                    'error' => $res
-                ], 406);
-            }
+        $res = array (
+            "success"=>false,
+            "message"=>$errors,
+            "error_code"=> 400,
+            "data"=>array()
+        ); 
 
-        }else{
-            $res = array (
-                "type"=>'https://www.computerhope.com/jargon/u/unauacce.htm',
-                "message"=>'Your request parameters didn’t validate.',
-                "detail"=>$errors,
-                "error_code"=> 400,
-                "data"=>array()
-            ); 
-            return  Response::json([
-                'error' => $res
-            ], 400);
-        }
+        return $res;
     }
 }

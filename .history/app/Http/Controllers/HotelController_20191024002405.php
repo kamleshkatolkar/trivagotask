@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use App\Hotel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
+use App\Rules\HotelName;
+use App\Rules\CategoryName;
 
 class HotelController extends Controller
 {
@@ -35,7 +38,19 @@ class HotelController extends Controller
      
      return $response;
     }
-  
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create(Request $request)
+    {   
+         
+        $Hotel = new Hotel();
+        return $Hotel->createHotel($request);
+        
+        
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -45,9 +60,7 @@ class HotelController extends Controller
      */
     public function store(Request $request)
     {
-        $Hotel = new Hotel();
-        
-        return $Hotel->createHotel($request);
+        return  response()->json('dd');
     }
 
     /**
@@ -56,15 +69,22 @@ class HotelController extends Controller
      * @param  \App\hotel  $hotel
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(hotel $hotel)
     {
-    
-     $hotel = new Hotel();   
-     $response = $hotel->getDetails($id);
-     
-     return $response;
+        //
     }
-  
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  \App\hotel  $hotel
+     * @return \Illuminate\Http\Response
+     */
+    public function edit(hotel $hotel)
+    {
+        //
+    }
+
     /**
      * Update the specified resource in storage.
      *
@@ -72,7 +92,7 @@ class HotelController extends Controller
      * @param  \App\hotel  $hotel
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request)
+    public function update(Request $request, hotel $hotel)
     {
         //
     }

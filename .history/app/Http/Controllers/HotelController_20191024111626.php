@@ -72,7 +72,7 @@ class HotelController extends Controller
      * @param  \App\hotel  $hotel
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request)
+    public function update(Request $request, hotel $hotel)
     {
         //
     }

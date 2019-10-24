@@ -178,28 +178,27 @@ class Hotel extends Model
 
         $errors = $validation->errors();
         
-        if(empty($errors->message)){
+        if($errors != null){
             $query = "select * from `hotels` where name ='".$request->name."' AND location = (select id from locations where zipcode = ".$request->location['zipcode'].")";
             $checkHotelExists = DB::select($query);
             if(empty($checkHotelExists)){
-                $location = new Location();
-                $location->city = $request->location['city'];
-                $location->state = $request->location['state'];
-                $location->country = $request->location['country'];
-                $location->zipcode = $request->location['zipcode'];
-                $location->address = $request->location['address'];
-                $location->save();
-
                 $hotel = new Hotel();
                 $hotel->name = $request->name;
                 $hotel->hotelier_id = $hotelier_id;
                 $hotel->rating = $request->rating;
                 $hotel->category = $request->category;
-                $hotel->location = $location->id;
                 $hotel->image = $request->image;
                 $hotel->price = $request->price;
                 $hotel->availability = $request->availability;
                 $hotel->save();
+                
+                $location = new Location();
+                $location->city = $request->city;
+                $location->state = $request->state;
+                $location->country = $request->country;
+                $location->zipcode = $request->zipcode;
+                $location->address = $request->address;
+                $location->save();
                 
                 if(!$hotel  || !$location){
                     $res = array (
@@ -216,12 +215,12 @@ class Hotel extends Model
                     $res = array (
                         "type"=>'https://www.computerhope.com/jargon/u/unauacce.htm',
                         "message"=>'Hotel data inserted successfully',
-                        "detail"=> '',
+                        "detail"=>'',
                         "error_code"=> 200,
-                        "data"=>$hotel
+                        "data"=>array()
                     ); 
                     return  Response::json([
-                        'success' => $res
+                        'error' => $res
                     ], 200);
                 }
             }else{
@@ -249,5 +248,8 @@ class Hotel extends Model
                 'error' => $res
             ], 400);
         }
+        
+
+        return $res;
     }
 }

@@ -216,9 +216,9 @@ class Hotel extends Model
                     $res = array (
                         "type"=>'https://www.computerhope.com/jargon/u/unauacce.htm',
                         "message"=>'Hotel data inserted successfully',
-                        "detail"=> '',
+                        "detail"=> $hotel,
                         "error_code"=> 200,
-                        "data"=>$hotel
+                        "data"=>array()
                     ); 
                     return  Response::json([
                         'success' => $res

@@ -56,15 +56,22 @@ class HotelController extends Controller
      * @param  \App\hotel  $hotel
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(hotel $hotel)
     {
-    
-     $hotel = new Hotel();   
-     $response = $hotel->getDetails($id);
-     
-     return $response;
+        //
     }
-  
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  \App\hotel  $hotel
+     * @return \Illuminate\Http\Response
+     */
+    public function edit(hotel $hotel)
+    {
+        //
+    }
+
     /**
      * Update the specified resource in storage.
      *
@@ -72,7 +79,7 @@ class HotelController extends Controller
      * @param  \App\hotel  $hotel
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request)
+    public function update(Request $request, hotel $hotel)
     {
         //
     }

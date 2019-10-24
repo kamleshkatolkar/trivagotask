@@ -20,8 +20,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 //Create entry into database
 Route::post('/hotels/list/{noOfRecords}/{start?}','HotelController@list');
-Route::post('/hotels/get/{id}/','HotelController@show');
-Route::post('/hotels/update/{id}/','HotelController@update');
+Route::post('/hotels/getDetails/{id}/','HotelController@details');
 
 Route::post('/hotels/create/','HotelController@store');
 

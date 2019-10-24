@@ -183,11 +183,11 @@ class Hotel extends Model
             $checkHotelExists = DB::select($query);
             if(empty($checkHotelExists)){
                 $location = new Location();
-                $location->city = $request->location['city'];
-                $location->state = $request->location['state'];
-                $location->country = $request->location['country'];
-                $location->zipcode = $request->location['zipcode'];
-                $location->address = $request->location['address'];
+                $location->city = $request->city;
+                $location->state = $request->state;
+                $location->country = $request->country;
+                $location->zipcode = $request->zipcode;
+                $location->address = $request->address;
                 $location->save();
 
                 $hotel = new Hotel();
@@ -216,9 +216,9 @@ class Hotel extends Model
                     $res = array (
                         "type"=>'https://www.computerhope.com/jargon/u/unauacce.htm',
                         "message"=>'Hotel data inserted successfully',
-                        "detail"=> '',
+                        "detail"=> $hotel,
                         "error_code"=> 200,
-                        "data"=>$hotel
+                        "data"=>array()
                     ); 
                     return  Response::json([
                         'success' => $res
