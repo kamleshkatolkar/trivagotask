@@ -32,6 +32,8 @@ class TrivagoTest extends TestCase
         ];
 
         $response = $this->json('POST', '/api/hotels/create/',$data);
-        $response->assertStatus(200);
+        $response->assertJson([['success'=>['code' => 200]]]);
+        $response->assertJson(['message' => "Hotel Created!"]);
+        $response->assertJson(['data' => $data]);
     }
 }

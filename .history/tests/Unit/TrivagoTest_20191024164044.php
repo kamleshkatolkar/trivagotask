@@ -15,14 +15,14 @@ class TrivagoTest extends TestCase
     public function testCreateHotel()
     {
         $data =  [ 
-            "name"=> "Skyna Luanda latestt",
+            "name"=> "Skyna Luanda new",
             "rating"=>4,
             "category"=> "Hotel",
             "location"=> [
                 "city"=> "Sioux-Falls",
                 "state"=>"South Dakota",
                 "country"=>"United States",
-                "zipcode"=>65124,
+                "zipcode"=>37141,
                 "address"=>"9026 Grasskamp Hill"
             ],
             "image"=> "https://robohash.org/vitaeconsequaturmaxime.jpg",
@@ -33,5 +33,8 @@ class TrivagoTest extends TestCase
 
         $response = $this->json('POST', '/api/hotels/create/',$data);
         $response->assertStatus(200);
+        $response->assertJson(['code' => 200]);
+        $response->assertJson(['message' => "Hotel Created!"]);
+        $response->assertJson(['data' => $data]);
     }
 }

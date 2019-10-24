@@ -180,8 +180,9 @@ class Hotel extends Model
         $errors = $validation->errors();
         
         if(empty($errors->message)){
-            $query = "select * from `hotels` where name ='".$request->name."' AND location IN (select id from locations where zipcode = ".$request->location['zipcode'].")";
+            $query = "select * from `hotels` where name ='".$request->name."' AND location = (select id from locations where zipcode = ".$request->location['zipcode'].")";
             $checkHotelExists = DB::select($query);
+            dd($checkHotelExists);
             if(empty($checkHotelExists)){
                 $location = new Location();
                 $location->city = $request->location['city'];
