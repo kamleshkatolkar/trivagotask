@@ -89,7 +89,8 @@ class HotelController extends Controller
     public function destroy(Request $request)
     {
         $hotel = new Hotel();   
-        $response = $hotel->deleteHotel($request);
+    public function deleteHotel($request){
+        $response = $hotel->delete($request);
         
         return $response;   
     }

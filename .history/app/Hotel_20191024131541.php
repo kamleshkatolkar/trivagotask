@@ -410,6 +410,7 @@ class Hotel extends Model
                 ], 503);
             }else{
                 $checkHotelIdExist = Hotel::where('id',$request->id)->where('hotelier_id',$auth_row->id)->get();
+                dd($checkHotelIdExist);
                 if($checkHotelIdExist->isEmpty()){
                     $res = array (
                         "type"=>'https://www.computerhope.com/jargon/u/unauacce.htm',

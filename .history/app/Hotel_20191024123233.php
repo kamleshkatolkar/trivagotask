@@ -9,7 +9,6 @@ use App\Rules\HotelName;
 use App\Rules\CategoryName;
 use Response;
 use DB;
-use App\Location;
 
 class Hotel extends Model
 {
@@ -337,26 +336,26 @@ class Hotel extends Model
         $errors = $validation->errors();
         
         if(empty($errors->message)){
-            $query = Hotel::where('id',$request->id)->first(); 
-            if($query){
-                if($request->location != null){ 
-                $location = Location::where('id',$query->location)->first();
+            $query = Hotel::where('id',$request->id)->get();
+            if($query->isEmpty() == false){
+                $location = Location::where('id',$query->location)->get();
                 $location->city = $request->location['city'];
                 $location->state = $request->location['state'];
                 $location->country = $request->location['country'];
                 $location->zipcode = $request->location['zipcode'];
                 $location->address = $request->location['address'];
                 $location->save();
-                }
- 
+
+                 
                 $query->name = $request->name;
                 $query->category = $request->category;
+                $query->location = $location->id;
                 $query->image = $request->image;
                 $query->price = $request->price;
                 $query->availability = $request->availability;
                 $query->save();
                 
-                if(!$query){
+                if(!$query  || !$location){
                     $res = array (
                         "type"=>'https://www.computerhope.com/jargon/u/unauacce.htm',
                         "message"=>'Error in updating data',
@@ -392,63 +391,5 @@ class Hotel extends Model
                 'error' => $res
             ], 400);
         }
-    }
-
-    public function deleteHotel($request){
-        
-            $auth_row = Hotelier::where('auth_token',$request->auth_token)->where('status',1)->first();
-            if($auth_row == null){
-                $res = array (
-                    "type"=>'https://www.computerhope.com/jargon/u/unauacce.htm',
-                    "message"=>'Auth token is expired or not found',
-                    "detail"=>'The provided Auth token is either expired or not exist, Please check your request params again',
-                    "error_code"=> 503,
-                    "data"=>array()
-                ); 
-                return  Response::json([
-                    'error' => $res
-                ], 503);
-            }else{
-                $checkHotelIdExist = Hotel::where('id',$request->id)->where('hotelier_id',$auth_row->id)->get();
-                if($checkHotelIdExist->isEmpty()){
-                    $res = array (
-                        "type"=>'https://www.computerhope.com/jargon/u/unauacce.htm',
-                        "message"=>'Hotel does not exists',
-                        "detail"=>'The hotel you trying to delete is either not exists or auth token is not correct, Please check your request params again',
-                        "error_code"=> 400,
-                        "data"=>array()
-                    ); 
-                    return  Response::json([
-                        'error' => $res
-                    ], 400);
-                }else{
-                    $query=Hotel::where('id',$request->id)->delete();
-                    if(!$query){
-                        $res = array (
-                            "type"=>'https://www.computerhope.com/jargon/u/unauacce.htm',
-                            "message"=>'Error in deleting Hotel',
-                            "detail"=>'',
-                            "error_code"=> 500,
-                            "data"=>array()
-                        ); 
-                        return  Response::json([
-                            'error' => $res
-                        ], 500); 
-                    }else{
-                        $res = array (
-                            "type"=>'https://www.computerhope.com/jargon/u/unauacce.htm',
-                            "message"=>'Hotel data deleted successfully',
-                            "detail"=> '',
-                            "error_code"=> 200,
-                            "data"=>$query
-                        ); 
-                        return  Response::json([
-                            'success' => $res
-                        ], 200);
-                    }
-                
-                }
-            }
- 
     }
 }

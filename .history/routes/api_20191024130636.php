@@ -23,7 +23,7 @@ Route::post('/hotels/list/{noOfRecords}/{start?}','HotelController@list');
 Route::post('/hotels/get/{id}/','HotelController@show');
 Route::post('/hotels/update/','HotelController@update');
 Route::post('/hotels/create/','HotelController@store');
-Route::post('/hotels/delete/','HotelController@destroy');
+Route::post('/hotels/delete/{id}/','HotelController@destroy');
 
 
 Route::post('/hoteliers/list/{auth_token}/{noOfRecords}/{start?}','HoteliersController@list');

@@ -75,7 +75,7 @@ class HotelController extends Controller
     public function update(Request $request)
     {
         $hotel = new Hotel();   
-        $response = $hotel->updateHotelInfo($request);
+        $response = $hotel->updateHotelInfo($id);
         
         return $response;   
     }
@@ -86,11 +86,8 @@ class HotelController extends Controller
      * @param  \App\hotel  $hotel
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request)
+    public function destroy(hotel $hotel)
     {
-        $hotel = new Hotel();   
-        $response = $hotel->deleteHotel($request);
-        
-        return $response;   
+        //
     }
 }

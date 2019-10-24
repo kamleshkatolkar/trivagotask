@@ -396,7 +396,7 @@ class Hotel extends Model
 
     public function deleteHotel($request){
         
-            $auth_row = Hotelier::where('auth_token',$request->auth_token)->where('status',1)->first();
+            $auth_row = Hotelier::where('auth_token',$auth_token)->where('status',1)->first();
             if($auth_row == null){
                 $res = array (
                     "type"=>'https://www.computerhope.com/jargon/u/unauacce.htm',
@@ -410,6 +410,7 @@ class Hotel extends Model
                 ], 503);
             }else{
                 $checkHotelIdExist = Hotel::where('id',$request->id)->where('hotelier_id',$auth_row->id)->get();
+                
                 if($checkHotelIdExist->isEmpty()){
                     $res = array (
                         "type"=>'https://www.computerhope.com/jargon/u/unauacce.htm',

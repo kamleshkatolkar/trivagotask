@@ -86,10 +86,10 @@ class HotelController extends Controller
      * @param  \App\hotel  $hotel
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request)
+    public function destroy($id)
     {
         $hotel = new Hotel();   
-        $response = $hotel->deleteHotel($request);
+        $response = $hotel->delete($id);
         
         return $response;   
     }
