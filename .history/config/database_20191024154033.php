@@ -67,7 +67,7 @@ return [
             'url' => env('DATABASE_URL'),
             'host' => env('DB_HOST', '127.0.0.1'),
             'port' => env('DB_PORT', '3306'),
-            'database' => env('DB_DATABASE', 'forUnitTest'),
+            'database' => env('DB_DATABASE', 'trivago'),
             'username' => env('DB_USERNAME', 'root'),
             'password' => env('DB_PASSWORD', 'Student123@'),
             'unix_socket' => env('DB_SOCKET', ''),
