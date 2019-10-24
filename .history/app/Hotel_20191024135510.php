@@ -453,9 +453,11 @@ class Hotel extends Model
 
      public function bookHotel($request)
      {
+       
+       
                 $checkHotelIdExist = Hotel::where('id',$request->id)->get();
-                 
-                if($checkHotelIdExist->isEmpty() == true){
+                
+                if($checkHotelIdExist->isEmpty()){
                     $res = array (
                         "type"=>'https://www.computerhope.com/jargon/u/unauacce.htm',
                         "message"=>'Hotel does not exists',
@@ -480,33 +482,51 @@ class Hotel extends Model
                         ], 503);
                     }
                 }
-                $availableBooking = $checkHotelIdExist[0]->availability - $request->noOfBooking;
-                if($availableBooking >= 0 ){
-                    $checkHotelIdExist[0]->availability = $availableBooking;
-                    $checkHotelIdExist[0]->save();
+      
+            $query = Hotel::where('id',$request->id)->first(); 
+            if($query){
+                if($request->location != null){ 
+                $location = Location::where('id',$query->location)->first();
+                $location->city = $request->location['city'];
+                $location->state = $request->location['state'];
+                $location->country = $request->location['country'];
+                $location->zipcode = $request->location['zipcode'];
+                $location->address = $request->location['address'];
+                $location->save();
+                }
+ 
+                $query->name = $request->name;
+                $query->category = $request->category;
+                $query->image = $request->image;
+                $query->price = $request->price;
+                $query->availability = $request->availability;
+                $query->save();
+                
+                if(!$query){
                     $res = array (
                         "type"=>'https://www.computerhope.com/jargon/u/unauacce.htm',
-                        "message"=>'Hotel Booking done successfully',
-                        "detail"=> '',
-                        "error_code"=> 200,
-                        "data"=>$checkHotelIdExist
-                    ); 
-                    return  Response::json([
-                        'success' => $res
-                    ], 200);
-
-                }else{
-                    $res = array (
-                        "type"=>'https://www.computerhope.com/jargon/u/unauacce.htm',
-                        "message"=>'Booking is not available',
-                        "detail"=>'Booking for this hotel is full, Please try another hotel',
-                        "error_code"=> 503,
+                        "message"=>'Error in updating data',
+                        "detail"=>'',
+                        "error_code"=> 500,
                         "data"=>array()
                     ); 
                     return  Response::json([
                         'error' => $res
-                    ], 503);
-                } 
+                    ], 500); 
+                }else{
+                    $res = array (
+                        "type"=>'https://www.computerhope.com/jargon/u/unauacce.htm',
+                        "message"=>'Hotel data updated successfully',
+                        "detail"=> '',
+                        "error_code"=> 200,
+                        "data"=>$query
+                    ); 
+                    return  Response::json([
+                        'success' => $res
+                    ], 200);
+                }
+            }
+       
      }
 
 }

@@ -489,7 +489,7 @@ class Hotel extends Model
                         "message"=>'Hotel Booking done successfully',
                         "detail"=> '',
                         "error_code"=> 200,
-                        "data"=>$checkHotelIdExist
+                        "data"=>checkHotelIdExist
                     ); 
                     return  Response::json([
                         'success' => $res

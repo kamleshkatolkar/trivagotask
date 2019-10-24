@@ -481,15 +481,16 @@ class Hotel extends Model
                     }
                 }
                 $availableBooking = $checkHotelIdExist[0]->availability - $request->noOfBooking;
+                dd($availableBooking);
                 if($availableBooking >= 0 ){
-                    $checkHotelIdExist[0]->availability = $availableBooking;
-                    $checkHotelIdExist[0]->save();
+                    $checkHotelIdExist->availability = $availableBooking;
+                    $checkHotelIdExist->save();
                     $res = array (
                         "type"=>'https://www.computerhope.com/jargon/u/unauacce.htm',
                         "message"=>'Hotel Booking done successfully',
                         "detail"=> '',
                         "error_code"=> 200,
-                        "data"=>$checkHotelIdExist
+                        "data"=>checkHotelIdExist
                     ); 
                     return  Response::json([
                         'success' => $res

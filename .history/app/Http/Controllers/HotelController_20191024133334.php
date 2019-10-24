@@ -103,7 +103,7 @@ class HotelController extends Controller
     public function booking(Request $request)
     {
         $hotel = new Hotel();   
-        $response = $hotel->bookHotel($request);
+        $response = $hotel->deleteHotel($request);
         
         return $response;   
     }

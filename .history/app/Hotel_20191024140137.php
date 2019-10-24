@@ -453,9 +453,11 @@ class Hotel extends Model
 
      public function bookHotel($request)
      {
+       
+       
                 $checkHotelIdExist = Hotel::where('id',$request->id)->get();
-                 
-                if($checkHotelIdExist->isEmpty() == true){
+                
+                if($checkHotelIdExist->isEmpty()){
                     $res = array (
                         "type"=>'https://www.computerhope.com/jargon/u/unauacce.htm',
                         "message"=>'Hotel does not exists',
@@ -480,16 +482,16 @@ class Hotel extends Model
                         ], 503);
                     }
                 }
-                $availableBooking = $checkHotelIdExist[0]->availability - $request->noOfBooking;
+                $availableBooking = $checkHotelIdExist->availability - $request->noOfBooking;
                 if($availableBooking >= 0 ){
-                    $checkHotelIdExist[0]->availability = $availableBooking;
-                    $checkHotelIdExist[0]->save();
+                    $checkHotelIdExist->availability = $availableBooking;
+                    $checkHotelIdExist->save();
                     $res = array (
                         "type"=>'https://www.computerhope.com/jargon/u/unauacce.htm',
                         "message"=>'Hotel Booking done successfully',
                         "detail"=> '',
                         "error_code"=> 200,
-                        "data"=>$checkHotelIdExist
+                        "data"=>checkHotelIdExist
                     ); 
                     return  Response::json([
                         'success' => $res

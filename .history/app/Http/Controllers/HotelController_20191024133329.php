@@ -100,10 +100,10 @@ class HotelController extends Controller
      * @param  \App\hotel  $hotel
      * @return \Illuminate\Http\Response
      */
-    public function booking(Request $request)
+    public function destroy(Request $request)
     {
         $hotel = new Hotel();   
-        $response = $hotel->bookHotel($request);
+        $response = $hotel->deleteHotel($request);
         
         return $response;   
     }
